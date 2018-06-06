@@ -1,0 +1,104 @@
+﻿@model INWKAssignment.ViewModels.CalculateJobViewModel
+
+@{
+    ViewBag.Title = "INWK Assignment - Calculate job";
+}
+
+
+<h2>Calculate Job</h2>
+<div class="row">
+    <div class="col-md-5">
+        <h3>Manual input</h3>
+        <p>
+            Fill the form manually and press Calculate to see the result
+        </p>
+
+        @using (Html.BeginForm("Result", "Home"))
+        {
+            <table id="items" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Item Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <select class="form-control" id="itemTypes0" name="viewModel.Job.Items[0].ItemType.Id" required>
+                                    <option value="">Select item type</option>
+                                    @foreach (var itemType in Model.ItemTypes)
+                                    {
+                                        <option value="@itemType.Id">@itemType.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input class="form-control" id="amount0" name="viewModel.Job.Items[0].Amount" type="number" step="0.01" required>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align: left;">
+                            <button class="btn btn-sm btn-block" id="addrow"><b>Add item</b></button>
+                            <button class="btn btn-sm btn-block btn-danger" id="deleterow"><b>Delete last</b></button>
+                        </td>
+                    </tr>
+                </tfoot>
+
+            </table>
+
+            <div class="form-group">
+                @Html.Label("Has Extra Margin?")
+                <input id="HasExtraMargin" name="viewModel.Job.HasExtraMargin" value="true" type="radio" style="margin:5px;">Yes
+                <input checked="checked" id="HasExtraMargin" name="viewModel.Job.HasExtraMargin" value="false" type="radio" style="margin:5px;">No
+            </div>
+
+            <br />
+
+            <button class="btn btn-success">Calculate</button>
+        }
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var counter = 1;
+
+            $("#addrow").on("click", function () {
+                var newRow = $("<tr>");
+                var cols = "";
+
+                cols += '<td><div class="form-group">';
+                cols += '<select class="form-control" id="itemTypes' + counter + '" name="viewModel.Job.Items[' + counter + '].ItemType.Id" required>'
+                cols += $('#itemTypes0').html();
+                cols += '</select>';
+                cols += '</div></td>';
+                cols += '<td><div class="form-group">';
+                cols += '<input class="form-control" id="amount' + counter + '" name="viewModel.Job.Items[' + counter + '].Amount" type="number" step="0.01" required>'
+                cols += '</div></td>';
+
+                newRow.append(cols);
+                $("#items").append(newRow);
+                counter++;
+                return false;
+            });
+
+            $("#deleterow").on("click", function () {
+                if (counter > 1) {
+                    $("#itemTypes" + (counter - 1)).closest("tr").remove();
+                    counter--;
+                }
+                return false;
+            });
+        });
+    </script>
+}

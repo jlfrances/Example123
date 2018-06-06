@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "INWK Assignment - Error";
+}
+
+<hgroup>
+    <h2>Error.</h2>
+    <h4>An error occurred while processing your request.</h4>
+</hgroup>
+<p>@ViewBag.ErrorMessage</p>
+<br />
+@Html.ActionLink("Main page", "Calculate", "Home", new { @class = "btn btn-info" })
+

@@ -1,0 +1,55 @@
+﻿@model INWKAssignment.ViewModels.CalculateJobViewModel
+
+@{
+    ViewBag.Title = "INWK Assignment - Calculate job";
+}
+
+
+<h2>Calculate job</h2>
+<div class="row">
+    <div class="col-md-5">
+        <h3>Result</h3>
+
+        @using (Html.BeginForm("Calculate", "Home"))
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Job.Items)
+            {
+                <tr>
+                    <td>
+                        <p>@item.ItemType.Name</p>
+                    </td>
+                    <td>
+                        @if (item.ItemType.IsExempt)
+                    {
+                        <p>@item.Amount.ToString("0.00")</p>
+                }
+                else
+                {
+                    <p>@((item.Amount + item.TaxAmount).ToString("0.00"))</p>
+            }
+                    </td>
+                </tr>
+        }
+                <tr>
+                    <td><text class="lead">TOTAL</text></td>
+                    <td><text class="lead">@Model.TotalRounded</text></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        @Html.ActionLink("Back", "Calculate", "Home", new { @class = "btn btn-primary" })
+
+}
+
+    </div>
+</div>
